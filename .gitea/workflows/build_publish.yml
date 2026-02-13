@@ -1,0 +1,75 @@
+name: Build and publish app
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "SimpleToolkit.Extensions**"
+
+jobs:
+  build:
+    name: Build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+  pack:
+    name: Pack
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+      - name: Setup GitVersion
+        uses: gittools/actions/gitversion/setup@v4.2.0
+        with:
+          versionSpec: 6.4.x
+      - name: Determine version
+        uses: gittools/actions/gitversion/execute@v4.2.0
+        id: gitversion
+        with:
+          configFilePath: ./.gitea/config/gitversion.yml
+      - name: Create NuGet package
+        run: dotnet pack -c Release -p:Version=${{steps.gitversion.outputs.SemVer}} -p:PackageVersion=${{steps.gitversion.outputs.SemVer}} --output ./
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: nuget
+          path: ./SimpleToolkit.Extensions.nupkg
+    outputs: 
+      version: ${{ steps.gitversion.outputs.SemVer }}
+  publish:
+    name: Publish
+    needs: pack
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: nuget
+          path: ./
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+      - name: Publish
+        run: dotnet nuget push ./SimpleToolkit.Extensions.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}
+      - name: Create Release
+        uses: akkuman/gitea-release-action@v1
+        with:
+          tag_name: ${{needs.pack.outputs.version}}
+          name: ${{needs.pack.outputs.version}}
+          files: |-
+            SimpleToolkit.Extensions.nupkg
