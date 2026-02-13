@@ -42,6 +42,8 @@ jobs:
         id: gitversion
         with:
           configFilePath: ./.gitea/config/gitversion.yml
+      - name: Copy README
+        run: cp ./README.md ./SimpleToolkit.Extensions/README.md
       - name: Create NuGet package
         run: dotnet pack -c Release -p:Version=${{steps.gitversion.outputs.SemVer}} -p:PackageVersion=${{steps.gitversion.outputs.SemVer}} --output ./
       - name: Upload artifact
