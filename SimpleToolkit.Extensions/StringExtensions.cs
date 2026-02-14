@@ -8,16 +8,8 @@ namespace SimpleToolkit.Extensions
 {
     public static class StringExtensions
     {
-        #region STATIC
-
         public static string CreateRandom(int length) => CreateRandom(length, "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890`~!@#$%^&*()-_=+[{]};:'\"\\|,<.>/?");
         public static string CreateRandom(int length, IEnumerable<char> characters) => new string(Enumerable.Repeat(characters, length).Select(s => s.ElementAt(Random.Shared.Next(s.Count()))).ToArray());
-
-        #endregion
-
-
-
-        #region INSTANCE
 
         public static string Shuffle(this string instance)
         {
@@ -34,7 +26,5 @@ namespace SimpleToolkit.Extensions
             }
             return new string(array);
         }
-
-        #endregion
     }
 }
