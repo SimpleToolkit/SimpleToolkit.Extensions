@@ -21,8 +21,8 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
-  pack:
-    name: Pack
+  version:
+    name: Determine version
     needs: build
     steps:
       - name: Checkout
@@ -32,7 +32,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 10.0.x
       - name: Setup GitVersion
         uses: gittools/actions/gitversion/setup@v4.2.0
         with:
@@ -42,15 +42,27 @@ jobs:
         id: gitversion
         with:
           configFilePath: ./.gitea/config/gitversion.yml
+    outputs: 
+      version: ${{ steps.gitversion.outputs.SemVer }}
+  pack:
+    name: Pack
+    needs: version
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
       - name: Create NuGet package
-        run: dotnet pack -c Release -p:Version=${{steps.gitversion.outputs.SemVer}} -p:PackageVersion=${{steps.gitversion.outputs.SemVer}} --output ./
+        run: dotnet pack -c Release -p:Version=${{needs.version.outputs.version}} -p:PackageVersion=${{needs.version.outputs.version}} --output ./
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
           name: nuget
           path: ./SimpleToolkit.Extensions.nupkg
     outputs: 
-      version: ${{ steps.gitversion.outputs.SemVer }}
+      version: ${{needs.version.outputs.version}}
   publish:
     name: Publish
     needs: pack
