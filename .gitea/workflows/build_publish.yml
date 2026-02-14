@@ -1,6 +1,9 @@
 name: Build and publish app
 
 on:
+  workflow_dispatch:
+    branches:
+      - "main"
   push:
     branches:
       - "main"
@@ -57,7 +60,7 @@ jobs:
       - name: Create NuGet package
         run: dotnet pack -c Release -p:Version=${{needs.version.outputs.version}} -p:PackageVersion=${{needs.version.outputs.version}} --output ./
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v3
         with:
           name: nuget
           path: ./SimpleToolkit.Extensions.${{needs.version.outputs.version}}.nupkg
