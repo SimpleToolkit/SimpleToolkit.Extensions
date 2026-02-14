@@ -60,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: nuget
-          path: ./SimpleToolkit.Extensions.nupkg
+          path: ./SimpleToolkit.Extensions.${{needs.version.outputs.version}}.nupkg
     outputs: 
       version: ${{needs.version.outputs.version}}
   publish:
@@ -77,11 +77,11 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Publish
-        run: dotnet nuget push ./SimpleToolkit.Extensions.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}
+        run: dotnet nuget push ./SimpleToolkit.Extensions.${{needs.pack.outputs.version}}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}
       - name: Create Release
         uses: akkuman/gitea-release-action@v1
         with:
           tag_name: ${{needs.pack.outputs.version}}
           name: ${{needs.pack.outputs.version}}
           files: |-
-            SimpleToolkit.Extensions.nupkg
+            SimpleToolkit.Extensions.${{needs.pack.outputs.version}}.nupkg
