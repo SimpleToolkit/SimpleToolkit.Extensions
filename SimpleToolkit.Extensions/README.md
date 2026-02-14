@@ -44,7 +44,7 @@ dotnet add package SimpleToolkit.Extensions
 **Package reference in .csproj file:**
 
 ```
-<PackageReference Include="SimpleToolkit.Extensions" Version="*.*.*" />
+<PackageReference Include="SimpleToolkit.Extensions" Version="<version>" />
 ```
 
 ## Attribution and contribution
