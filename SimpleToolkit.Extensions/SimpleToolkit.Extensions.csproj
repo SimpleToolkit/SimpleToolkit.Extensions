@@ -12,6 +12,7 @@
         <PackageIcon>icon.png</PackageIcon>
         <RepositoryUrl>https://repos.mateuszskoczek.com/SimpleToolkit/SimpleToolkit.Extensions</RepositoryUrl>
         <Description>Set of helpers, class extensions, UI controls used in my other C# projects - Class extensions </Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
