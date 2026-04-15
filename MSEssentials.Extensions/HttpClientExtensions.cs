@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleToolkit.Extensions
+namespace MSEssentials.Extensions
 {
     public static class HttpClientExtensions
     {
@@ -14,7 +14,7 @@ namespace SimpleToolkit.Extensions
             {
                 long? contentLength = response.Content.Headers.ContentLength;
 
-                using (Stream download = await response.Content.ReadAsStreamAsync(cancellationToken))
+                await using (Stream download = await response.Content.ReadAsStreamAsync(cancellationToken))
                 {
                     if (progress == null || !contentLength.HasValue)
                     {

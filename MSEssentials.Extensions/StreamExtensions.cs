@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleToolkit.Extensions
+namespace MSEssentials.Extensions
 {
     public static class StreamExtensions
     {

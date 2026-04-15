@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleToolkit.Extensions
+namespace MSEssentials.Extensions
 {
     public static class StringExtensions
     {
@@ -20,9 +20,7 @@ namespace SimpleToolkit.Extensions
             {
                 n--;
                 int k = rng.Next(n + 1);
-                char value = array[k];
-                array[k] = array[n];
-                array[n] = value;
+                (array[k], array[n]) = (array[n], array[k]);
             }
             return new string(array);
         }

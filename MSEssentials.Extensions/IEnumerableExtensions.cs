@@ -1,4 +1,4 @@
-namespace SimpleToolkit.Extensions;
+namespace MSEssentials.Extensions;
 
 public static class IEnumerableExtensions
 {

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleToolkit.Extensions", "SimpleToolkit.Extensions\SimpleToolkit.Extensions.csproj", "{6D174E00-25BB-4E29-F2DA-041331660D09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSEssentials.Extensions", "MSEssentials.Extensions\MSEssentials.Extensions.csproj", "{6D174E00-25BB-4E29-F2DA-041331660D09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
